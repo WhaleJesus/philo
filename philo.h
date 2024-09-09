@@ -6,7 +6,7 @@
 /*   By: sklaps <sklaps@student.s19.be>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 14:23:42 by sklaps            #+#    #+#             */
-/*   Updated: 2024/09/08 15:46:47 by sklaps           ###   ########.fr       */
+/*   Updated: 2024/09/09 17:15:33 by sklaps           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,10 +32,11 @@ typedef struct	s_data
 	pthread_mutex_t		*forks;
 	pthread_mutex_t		*ff;
 	pthread_mutex_t		*nf;
-	bool				*dead;
+	int					*dead;
 }	t_data;
 
 unsigned long	get_time();
 unsigned long	get_timediff(unsigned long start);
 int	ft_atoi(const char *nptr);
+void	free_eryting(t_data *my_data, t_data data, pthread_t *phils);
 #endif
