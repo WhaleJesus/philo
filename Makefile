@@ -6,7 +6,7 @@
 #    By: sklaps <sklaps@student.s19.be>             +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/07/11 15:19:11 by sklaps            #+#    #+#              #
-#    Updated: 2024/09/09 16:57:06 by sklaps           ###   ########.fr        #
+#    Updated: 2024/09/10 14:32:09 by sklaps           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,8 @@ NAME =			philo
 FILES = 		philo.c \
 				time.c \
 				ft_atoi.c \
-				close.c
+				close.c \
+				len.c
 SRC_DIR =		src/
 SRC =			$(addprefix $(SRC_DIR), $(FILES))
 OBJ =			${SRC:.c=.o}

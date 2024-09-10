@@ -6,7 +6,7 @@
 /*   By: sklaps <sklaps@student.s19.be>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 16:52:36 by sklaps            #+#    #+#             */
-/*   Updated: 2024/09/09 17:15:27 by sklaps           ###   ########.fr       */
+/*   Updated: 2024/09/10 18:03:44 by sklaps           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,8 @@ void	free_eryting(t_data *my_data, t_data data, pthread_t *phils)
 		my_data--;
 		i++;
 	}
-	free(my_data);
 	free(data.forks);
+	free(data.print);
+	free(my_data);
 	free(phils);
 }

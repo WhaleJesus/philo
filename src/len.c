@@ -1,29 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   time.c                                             :+:      :+:    :+:   */
+/*   len.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sklaps <sklaps@student.s19.be>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/09/08 14:32:52 by sklaps            #+#    #+#             */
-/*   Updated: 2024/09/10 16:14:59 by sklaps           ###   ########.fr       */
+/*   Created: 2024/09/10 14:30:30 by sklaps            #+#    #+#             */
+/*   Updated: 2024/09/10 18:24:50 by sklaps           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../philo.h"
 
-unsigned long	get_time()
+int	array_len(char **arr)
 {
-	t_timeval	end;
+	int	i;
 
-	gettimeofday(&end, 0);
-	return ((end.tv_sec * 1000) + (end.tv_usec / 1000));
-}
-
-unsigned long	get_timediff(unsigned long start)
-{
-	unsigned long	end;
-	
-	end = get_time();
-	return (end - start);
+	i = 0;
+	while (*arr)
+	{
+		arr++;
+		i++;
+	}
+	return (i);
 }
