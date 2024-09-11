@@ -6,7 +6,7 @@
 /*   By: sklaps <sklaps@student.s19.be>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/08 13:09:25 by sklaps            #+#    #+#             */
-/*   Updated: 2024/09/10 18:24:59 by sklaps           ###   ########.fr       */
+/*   Updated: 2024/09/11 18:31:55 by sklaps           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,8 @@ int	print_msg(char *msg, t_data *data, unsigned long time, int deadmsg)
 		if (!(*(data->dead) == 0)
 				|| (deadmsg == 1 && !(*(data->dead) == 0)))
 		{
-			printf("%lu Philo %i is %s\n", time, data->philo_id, msg);
+			time = get_timediff(data->start);
+			printf("%lu %i %s\n", time, data->philo_id, msg);
 			if (deadmsg == 1)
 				*(data->dead) = 0;
 		}
@@ -66,8 +67,19 @@ int	check_dead(t_data *data, int ct)
 	time_die = (unsigned long)data->time_die;
 	if (get_timediff(data->time_since_eat) > time_die)
 	{
-		print_msg("dead", data, ct, 1);
+		print_msg("died", data, ct, 1);
 		return (-1);
+	}
+	return (1);
+}
+
+int	while_loopje(unsigned long st, int time, t_data *data, unsigned long ct)
+{
+	while (get_timediff(st) < (unsigned long)time)
+	{
+		if (check_dead(data, ct) == -1)
+			return (-1);
+		usleep(100);
 	}
 	return (1);
 }
@@ -77,22 +89,23 @@ int	philo_eat(t_data *data)
 	unsigned long	st;
 	unsigned long	ct;
 
+	ct = get_timediff(data->start);
 	pthread_mutex_lock(data->ff);
+	if (print_msg("has taken a fork", data, ct, 0) == -1)
+		return (-1);
+	if (check_dead(data, ct) == -1)
+		return (-1);
 	pthread_mutex_lock(data->nf);
 	ct = get_timediff(data->start);
-	data->time_since_eat = get_time();
-	if (print_msg("eating", data, ct, 0) == -1)
+	if (print_msg("is eating", data, ct, 0) == -1)
 		return (-1);
 	st = get_time();
-	while (get_timediff(st) < (unsigned long)data->time_eat)
-	{
-		if (check_dead(data, ct) == -1)
-			return (-1);
-	}
+	data->time_since_eat = st;
+	if (while_loopje(st, data->time_eat, data, ct) == -1)
+		return (-1);
+//	printf("%lu %i done eating\n", get_timediff(st), data->philo_id);
 	return (1);
 }
-
-
 
 int	philo_sleep(t_data *data)
 {
@@ -101,13 +114,10 @@ int	philo_sleep(t_data *data)
 
 	st = get_time();
 	ct = get_timediff(data->start);
-	if (print_msg("sleeping", data, ct, 0) == -1)
+	if (print_msg("is sleeping", data, ct, 0) == -1)
 		return (-1);
-	while (get_timediff(st) < (unsigned long)data->time_sleep)
-	{
-		if (check_dead(data, ct) == -1)
-			return (-1);
-	}
+	if (while_loopje(st, data->time_sleep, data, ct) == -1)
+		return (-1);
 	return (1);
 }
 
@@ -116,7 +126,7 @@ int	philo_think(t_data *data)
 	unsigned long	ct;
 
 	ct = get_timediff(data->start);
-	if (print_msg("thinking", data, ct, 0) == -1)
+	if (print_msg("is thinking", data, ct, 0) == -1)
 		return (-1);
 	return (1);
 }
@@ -130,7 +140,6 @@ int	philo_cycle(t_data *data)
 	pthread_mutex_unlock(data->nf);
 	if (check == -1)
 		return (-1);
-	data->time_since_eat = get_time();
 	if (philo_sleep(data) == -1)
 		return (-1);
 	if (philo_think(data) == -1)
