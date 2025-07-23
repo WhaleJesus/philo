@@ -1,26 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strchr.c                                        :+:      :+:    :+:   */
+/*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sklaps <sklaps@student.s19.be>             +#+  +:+       +#+        */
+/*   By: sklaps <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/04/03 16:28:00 by sklaps            #+#    #+#             */
-/*   Updated: 2024/04/16 15:09:52 by sklaps           ###   ########.fr       */
+/*   Created: 2025/07/23 15:33:55 by sklaps            #+#    #+#             */
+/*   Updated: 2025/07/23 15:33:56 by sklaps           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "../includes/philo.h"
 
-char	*ft_strchr(const char *s, int c)
+void	free_prog(t_program *prog)
 {
-	while (*s)
-	{
-		if (*s == (unsigned char)c)
-			return ((char *)s);
-		s++;
-	}
-	if ((unsigned char)c == '\0')
-		return ((char *)s);
-	return (NULL);
+	int	i;
+
+	i = -1;
+	while (++i < prog->n_philos)
+		free(prog->forks[i]);
+	free(prog->forks);
+	i = -1;
+	while (++i < prog->n_philos)
+		free(prog->philos[i]);
+	free(prog->philos);
 }

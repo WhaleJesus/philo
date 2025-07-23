@@ -3,37 +3,75 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: sklaps <sklaps@student.s19.be>             +#+  +:+       +#+         #
+#    By: sklaps <sklaps@42.fr>                      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2024/07/11 15:19:11 by sklaps            #+#    #+#              #
-#    Updated: 2024/09/10 14:32:09 by sklaps           ###   ########.fr        #
+#    Created: 2025/06/11 15:12:46 by sklaps            #+#    #+#              #
+#    Updated: 2025/06/11 15:13:04 by sklaps           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME =			philo
-FILES = 		philo.c \
-				time.c \
-				ft_atoi.c \
-				close.c \
-				len.c
-SRC_DIR =		src/
-SRC =			$(addprefix $(SRC_DIR), $(FILES))
-OBJ =			${SRC:.c=.o}
-CC = 			cc
-CFLAGS =		-Wall -Wextra -Werror -g -pthread
-RM =			rm -rf
+NAME		= philo
+
+CC			= cc
+CFLAGS		= -g -Wall -Wextra -Werror -Iinclude -pthread  
+
+FSANITIZE	= -fsanitize=address
+
+SRCDIR		= src
+OBJDIR		= objs
+LIBFTDIR	= libft
+LIBFT		= $(LIBFTDIR)/libft.a
+
+SRCFILES	= init_philo.c \
+			  time.c \
+			  run.c \
+			  free.c \
+			  get_set.c \
+			  sync.c \
+			  program_routine.c \
+			  philo_routine.c 
+
+MAINFILE	= main.c
+
+SRC			= $(addprefix $(SRCDIR)/, $(SRCFILES))
+MAIN		= $(SRCDIR)/$(MAINFILE)
+
+OBJ			= $(addprefix $(OBJDIR)/, $(SRCFILES:.c=.o))
+MAINOBJ		= $(OBJDIR)/$(MAINFILE:.c=.o)
+
+RM			= rm -f
+MKDIR		= mkdir -p
+
+# Colors (optional)
+GREEN		= \033[0;32m
+YELLOW		= \033[38;2;255;255;0m
+NEON		= \033[38;5;198m 
+NC			= \033[0m
 
 all: $(NAME)
 
-$(NAME) : $(OBJ)
-	$(CC) $(CFLAGS) $(OBJ) -o $(NAME)
+$(NAME): $(OBJ) $(MAINOBJ)
+	@echo "Linking $(NAME)..."
+	$(CC) $(CFLAGS) $(OBJ) $(MAINOBJ) -o $(NAME)
+	@echo "$(GREEN)✔️ Build successful: $(NAME)$(nc)"
 
-clean :
-	${RM} $(OBJ)
+$(OBJDIR)/%.o: $(SRCDIR)/%.c
+	@$(MKDIR) $(OBJDIR)
+	$(CC) $(CFLAGS) -c $< -o $@
 
-fclean : clean
-	${RM} $(NAME)
+$(LIBFT):
+	$(MAKE) -C $(LIBFTDIR)
 
-re : fclean all
+clean:
+	$(RM) $(OBJ)
+	$(RM) $(MAINOBJ)
+	@echo "$(GREEN)clean done$(NC)"
+
+fclean: clean
+	$(RM) $(NAME)
+	@echo "$(GREEN)fclean done$(NC)"
+
+re: fclean all
 
 .PHONY: all clean fclean re
+
