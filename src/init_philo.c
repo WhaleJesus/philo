@@ -53,6 +53,7 @@ t_philo	*init_philo(t_program *prog, int id)
 	philo->last_meal = get_time(MICROSECOND);
 	philo->n_meals = 0;
 	philo->full = false;
+	pthread_mutex_init(&philo->philo_mtx, NULL);
 	philo->prog = prog;
 	return (philo);
 }
