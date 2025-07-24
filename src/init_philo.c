@@ -38,6 +38,8 @@ t_fork	*init_fork(int id)
 	t_fork	*fork;
 
 	fork = malloc(sizeof(t_fork));
+	if (fork == NULL)
+		return (NULL);
 	fork->id = id;
 	pthread_mutex_init(&fork->fork, NULL);
 	return (fork);

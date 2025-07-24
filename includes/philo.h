@@ -98,6 +98,7 @@ void	usleep_on_crack(long usec, t_program *prog);
 
 //free
 void	free_prog(t_program *prog);
+void	destroy_mutexes(t_program *prog);
 
 //get set
 void	set_bool(pthread_mutex_t *mtx, bool *dest, bool value);

@@ -57,5 +57,6 @@ int	main(int ac, char **av)
 	init_data(&data, ac, av);
 	init_program(&data, &program);
 	launch_threads(&program);
+	destroy_mutexes(&program);
 	free_prog(&program);
 }
